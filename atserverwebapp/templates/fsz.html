@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<title>Transmitter Status Monitor Page</title>
+	</head>
+	<body>
+	<div>
+	<H1 style="text-align: center;">Transmitter Status Monitor Page</H1>
+	{% for status in tstatus %}
+	<div style="padding:10px;">
+	<table align="center" border="4" cellpadding="2" cellspacing="2" style="width: 80%;">
+			<tbody>
+				<tr>
+					<td style="text-align: center;"><B>ManchineIP</B></td>
+					<td style="text-align: center;"><B>MachineStatus</B></td>
+					<td style="text-align: center;"><B>PlayerStatus</B></td>
+					<td style="text-align: center;" colspan=2><B>StatusUpdateTime</B></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">{{ status["machine_ip"] }}</td>
+					<td style="text-align: center;">{{ status["machine_status"] }}</td>
+					<td style="text-align: center;">{{ status["player_status"] }}</td>
+					<td style="text-align: center;" colspan=2>{{ status["update_time"] }}</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;"><B>StreamType</B></td>
+					<td style="text-align: center;"><B>Frequency</B></td>
+					<td style="text-align: center;"><B>BandWidth</B></td>
+					<td style="text-align: center;"><B>TDT</B></td>
+					<td style="text-align: center;"><B>Comment</B></td>
+				</tr>
+				<tr>
+					<td style="text-align: center;">{{ status["stream_type"] }}</td>
+					<td style="text-align: center;">{{ status["frequency"] }}</td>
+					<td style="text-align: center;">{{ status["bandwidth"] }}</td>
+					<td style="text-align: center;">{{ status["tdt"] }}</td>
+					<td style="text-align: center;">{{ status["comment"] }}</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;"><B>StreamName</B></td>
+					<td style="text-align: center;" colspan=5>{{ status["stream_name"] }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	{% end %}
+	</div>
+	</body>
+</html>
