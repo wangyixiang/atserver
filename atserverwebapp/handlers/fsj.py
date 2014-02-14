@@ -32,6 +32,7 @@ class FsjHTMLHandler(RequestHandler):
                 status["stream_name"] = ""
                 status["bandwidth"] = ""
                 status["tdt"] = ""
+                status["notepad"] = ""
                 if status["machine_status"] == fsjstatus.M_S_NONE:
                     status["machine_status"] = fsjstatus.M_S_NONE_STR
                 elif status["machine_status"] == fsjstatus.M_S_UNREACHABLE:
@@ -83,6 +84,7 @@ class FsjHTMLHandler(RequestHandler):
                             status["stream_name"] = astatus["streamname"]
                             status["bandwidth"] = astatus["bandwidth"]
                             status["tdt"] = astatus["tdt"]
+                            status["notepad"] = astatus["notepad"]
                         elif status["player_status"] == fsjstatus.PL_S_PAUSE:
                             status["player_status"] = fsjstatus.PL_S_PAUSE_STR
                             status["frequency"] = astatus["frequency"]
@@ -92,6 +94,7 @@ class FsjHTMLHandler(RequestHandler):
                             status["stream_name"] = astatus["streamname"]
                             status["bandwidth"] = astatus["bandwidth"]
                             status["tdt"] = astatus["tdt"]
+                            status["notepad"] = astatus["notepad"]
                         elif status["player_status"] == fsjstatus.PL_S_PLAY:
                             status["player_status"] = fsjstatus.PL_S_PLAY_STR
                             status["frequency"] = astatus["frequency"]
@@ -101,6 +104,7 @@ class FsjHTMLHandler(RequestHandler):
                             status["stream_name"] = astatus["streamname"]
                             status["bandwidth"] = astatus["bandwidth"]
                             status["tdt"] = astatus["tdt"]
+                            status["notepad"] = astatus["notepad"]
                             
 #-----------------------------------------------------------------------------#
                 else:
