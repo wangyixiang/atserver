@@ -57,6 +57,19 @@ def get_player_info():
     c_tdt_control_id = 0x000003F3
     
     
+    result['notepad'] = ''
+    try:
+        notepad_process = pywinauto.Application().connect_(path="notepad.exe")
+        np_parentwindow = notepad_process.top_window_()
+        np_edit_window = notepad_process.windows_(top_level_only=False, parent=np_parentwindow.handle, control_id = 0x0000000F)[0]
+        result['notepad'] = np_edit_window.Texts()[0]
+        if len(result['notepad']) > 512:
+            result['notepad'] = result['notepad'][:511]
+    except pywinauto.application.ProcessNotFoundError:
+        logging.info('notepad process is not found.')
+    except Exception:
+        logging.info('failed on getting notepad content.')
+
     try:
         logging.info('starting fetch player info.')
         app_process = pywinauto.Application().connect_(path=process_name)
@@ -69,14 +82,14 @@ def get_player_info():
         stype_window = app_process.windows_(top_level_only=False, parent=parentwindow.handle, control_id = c_type_control_id)[0]
         bandwidth_window = app_process.windows_(top_level_only=False, parent=parentwindow.handle, control_id = c_bandwidth_control_id)[0]
         tdt_window = app_process.windows_(top_level_only=False, parent=parentwindow.handle, control_id = c_tdt_control_id)[0]
-
+        
         result['pls'] = PL_S_UNKNOWN
         result['stream'] = ''
         result['freq'] = ''
         result['stype'] = ''
         result['bandwidth'] = ''
         result['tdt'] = 0
-
+        
         if file_window == [] or state_window == [] or stype_window == [] or freq_window == []:
             result['pls'] = PL_S_UNKNOWN
         else:
@@ -111,16 +124,17 @@ def get_player_info():
                     result['pls'] = PL_S_UNKNOWN
                     
     except RuntimeError:
-        result = { 'ms':M_S_NORMAL, 'ps':P_S_NOTEXIST }
+        result['ms'] = M_S_NORMAL
+        result['ps'] = P_S_NOTEXIST
         result['pls'] = PL_S_UNKNOWN
         result['stream'] = ''
         result['freq'] = ''
         result['stype'] = ''
         result['bandwidth'] = ''
-        result['tdt'] = 0        
-
+        result['tdt'] = 0
     except pywinauto.application.ProcessNotFoundError:
-        result = { 'ms':M_S_NORMAL, 'ps':P_S_NOTEXIST }
+        result['ms'] = M_S_NORMAL
+        result['ps'] = P_S_NOTEXIST
         result['pls'] = PL_S_UNKNOWN
         result['stream'] = ''
         result['freq'] = ''
@@ -146,15 +160,16 @@ def db_update_fsz_status(fsz_status):
     bandwidth = fsz_status['bandwidth'].strip()
     tdt = fsz_status['tdt']
     conn = torndb.Connection("atserver", "atdb", "", "")
+    notepad = fsz_status['notepad'].strip()
     conn.execute("""
     UPDATE fszmonitor
     SET machinename=%s, machinestate=%s, processstate=%s, playerstate=%s,
     updatetime=%s, streamname=%s, streamtype=%s, frequency=%s, bandwidth=%s, 
-    tdt=%s
+    tdt=%s, notepad=%s
     WHERE machineip=%s
     """, machinename, machinestate, processstate, playerstate,
            updatetime, streamname, streamtype, frequency,
-           bandwidth, tdt, machineip
+           bandwidth, tdt, notepad, machineip
         )
     logging.info("updated the fszmonitor table data.")
 
