@@ -15,7 +15,8 @@ CREATE TABLE `fszmonitor` (
     `frequency` VARCHAR(32),
     `bandwidth` VARCHAR(16),
     `tdt` SMALLINT DEFAULT 0,
-    `comment` VARCHAR(512)
+    `comment` VARCHAR(512),
+    `notepad` VARCHAR(512)
     
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
